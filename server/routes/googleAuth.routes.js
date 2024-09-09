@@ -6,7 +6,7 @@ const {redisConnection} = require("../middlewares/redisMiddlewares")
 const axios = require("axios")
 const OpenAi = require("openai")
 
-const openai = new OpenAi({apiKey:'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'});
+const openai = new OpenAi({apiKey:'process.env.OPENAI_API_KEY'});
 
 const googleRouter = express.Router();
 
