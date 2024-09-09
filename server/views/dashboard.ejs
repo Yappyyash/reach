@@ -12,7 +12,7 @@
     <h2><%= user.email %></h2>
     
     <button id="fetch">Fetch mail</button>
-    
+    <button id="read">Read 1st</button>
     <script>
         // Outputting user's email in the console using EJS
         console.log('<%= user.email %>');
@@ -20,6 +20,9 @@
         document.getElementById('fetch').addEventListener('click', function() {
             fetchEmails('<%= user.email %>');  // Fetch emails using user.email
             fetchData('<%= user.email %>');
+        });
+        document.getElementById('read').addEventListener('click', function(){
+            readMail();
         });
 
         const fetchEmails = async (email) => {
@@ -34,32 +37,56 @@
         };
 
         
-        const fetchData = async (email) => {
-  console.log("Method2 is running");
-  try {
-    const response = await fetch(`http://localhost:3000/userData/${email}`);
+      const fetchData = async (email) => {
+        console.log("Method2 is running");
+        try {
+        const response = await fetch(`http://localhost:3000/api/mail/userData/${email}`);
     
-    // Log the response status and headers
-    console.log("Response Status:", response.status);
-    console.log("Response Headers:", response.headers);
+        // Log the response status and headers
+        console.log("Response Status:", response.status);
+        console.log("Response Headers:", response.headers);
 
-    // Read response text before parsing
-    const text = await response.text();
-    console.log("Response Text:", text);
+        // Read response text before parsing
+        const text = await response.text();
+        console.log("Response Text:", text);
 
     // Check if response is JSON and parse it
-    try {
-      const data = JSON.parse(text);
-      console.log("Data response:", data);
-    } catch (jsonError) {
-      console.error("Error parsing JSON:", jsonError);
-      console.error("Received non-JSON response:", text);
+      try {
+        const data = JSON.parse(text);
+        console.log("Data response:", data);
+      } catch (jsonError) {
+        console.error("Error parsing JSON:", jsonError);
+        console.error("Received non-JSON response:", text);
+      }
+    } catch (error) {
+      console.error("Error fetching data:", error);
     }
-  } catch (error) {
-    console.error("Error fetching data:", error);
-  }
 };
-
+const readMail = function(){
+  console.log("read is running");
+  let email = 'yash919bansal@gmaail.com';
+  let messageId = '191bba95110ffc5c'
+  fetch(`http://localhost:3000/api/mail/read-mail/${email}/message/${messageId}`)
+  .then(response => {
+    // Check if response is in JSON format
+    const contentType = response.headers.get("content-type");
+    if (contentType && contentType.includes("application/json")) {
+      return response.json();
+    } else {
+      // If it's not JSON, handle as text (HTML)
+      return response.text().then(text => {
+        console.error("Received non-JSON response:", text);
+        throw new Error("Response was not JSON");
+      });
+    }
+  })
+  .then(data => {
+    console.log("Message data: ", data);
+  })
+  .catch(error => {
+    console.error("Error fetching message:", error);
+  });
+}
     </script>
 </body>
 </html>

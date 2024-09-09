@@ -183,8 +183,6 @@ googleRouter.get("/all-mails/:email", async (req, res) => {
     }
 }
 
-
-
 module.exports = {
-    googleRouter,sendMail
+    googleRouter,sendMail, assignLabel
 }

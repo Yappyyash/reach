@@ -1,7 +1,7 @@
 const express = require("express");
 const session = require("express-session");
 const {googleRouter} = require("./routes/googleAuth.routes");
-const {messageRouter} = require("./routes/message.routes");
+const {messageRouter} = require("./routes/messageroutes");
 const {mailRouter} = require("./routes/sendmail.routes")
 // const {outlookRouter} = require("./routes/outlook.auth");
 // const {outlookmailRouter} = require("./routes/outlook.mail.queue.route");
